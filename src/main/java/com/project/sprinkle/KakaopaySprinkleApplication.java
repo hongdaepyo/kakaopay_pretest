@@ -1,13 +1,13 @@
-package com.project.spread;
+package com.project.sprinkle;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class KakaopaySpreadApplication {
+public class KakaopaySprinkleApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(KakaopaySpreadApplication.class, args);
+		SpringApplication.run(KakaopaySprinkleApplication.class, args);
 	}
 
 }

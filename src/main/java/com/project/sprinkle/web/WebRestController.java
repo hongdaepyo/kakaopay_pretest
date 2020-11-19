@@ -1,4 +1,4 @@
-package com.project.spread.web;
+package com.project.sprinkle.web;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,8 +11,8 @@ public class WebRestController {
 		return "helloWorld";
 	}
 	
-	@GetMapping("/spreadMoney")
-	public String spreadMoney() {
+	@GetMapping("/sprinkleMoney")
+	public String sprinkleMoney() {
 		return "helloWorld";
 	}
 	

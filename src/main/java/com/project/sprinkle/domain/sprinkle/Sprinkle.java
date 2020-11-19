@@ -1,15 +1,16 @@
-package com.project.spread.domain.spread;
+package com.project.sprinkle.domain.sprinkle;
 
 import javax.persistence.*;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Spread {
+public class Sprinkle {
 
 	@Id
 	private Long id; //뿌리기 아이디
@@ -22,18 +23,24 @@ public class Spread {
 	private int tokenSN;
 	
 	@Column(nullable = false)
-	private String spreadUserId;
+	private String sprinkleUserId;
 	
 	@Column(nullable = false)
 	private String roomId;
 	
 	@Column(nullable = false)
-	private String spreadDate;
+	private String sprinkleDate;
 	
 	@Column
 	private boolean acceptedFlag;
 	
-	public Spread(Long dividedAmount, ) {
-		
+	@Builder
+	public Sprinkle(Long dividedAmount, String token, int tokenSN, String sprinkleUserId, String roomId, String sprinkleDate) {
+		this.dividedAmount = dividedAmount;
+		this.token = token;
+		this.tokenSN = tokenSN;
+		this.sprinkleUserId = sprinkleUserId;
+		this.roomId = roomId;
+		this.sprinkleDate = sprinkleDate;
 	}
 }
