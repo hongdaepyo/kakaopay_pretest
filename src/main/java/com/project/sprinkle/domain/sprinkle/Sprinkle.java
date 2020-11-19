@@ -13,7 +13,10 @@ import lombok.NoArgsConstructor;
 public class Sprinkle {
 
 	@Id
+	@GeneratedValue
 	private Long id; //뿌리기 아이디
+	
+	@Column
 	private Long dividedAmount; //분배 금액
 	
 	@Column(length = 3, nullable = false)
