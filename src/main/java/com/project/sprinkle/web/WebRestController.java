@@ -1,9 +1,13 @@
 package com.project.sprinkle.web;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +18,7 @@ import com.project.sprinkle.domain.sprinkle.Sprinkle;
 import com.project.sprinkle.domain.sprinkle.SprinkleRepository;
 import com.project.sprinkle.dto.SprinkleReceiveRequestDto;
 import com.project.sprinkle.dto.SprinkleSaveRequestDto;
+import com.project.sprinkle.service.CheckService;
 import com.project.sprinkle.service.ReceiveService;
 import com.project.sprinkle.service.SprinkleService;
 
@@ -28,6 +33,7 @@ public class WebRestController {
 	private SprinkleRepository sprinkleRepository;
 	private SprinkleService sprinkleService;
 	private ReceiveService receiveService;
+	private CheckService checkService;
 	
 	@GetMapping("/hello")
 	public String hello() {
@@ -68,10 +74,18 @@ public class WebRestController {
 		return amount;
 	}
 	
-	@GetMapping("/checkMoney")
-	public String checkMoney() {
+	@GetMapping(value = "/checkMoney/{token}")
+	public Map<String, Object> checkMoney(@PathVariable String token, HttpServletRequest request) {
 		log.info("checkMoney started");
+		
+		String userId = request.getHeader("X-USER-ID");
+		String roomId = request.getHeader("X-ROOM-ID");
+		
+		log.info("userId = {}, roomId = {}, token = {}", userId, roomId, token);
+		
+		Map<String, Object> map = checkService.check(userId, roomId, token);
+		
 		log.info("checkMoney ended");
-		return "helloWorld";
+		return map;
 	}
 }
