@@ -52,7 +52,7 @@ public class WebRestController {
 	}
 	
 	@PutMapping(value= "/sprinkle", consumes="application/json;charset=utf-8")
-	public String acceptMoney(@RequestBody SprinkleAcceptRequestDto dto, HttpServletRequest request) {
+	public long acceptMoney(@RequestBody SprinkleAcceptRequestDto dto, HttpServletRequest request) {
 		log.info("acceptMoney started");
 		
 		String userId = request.getHeader("X-USER-ID");
@@ -61,9 +61,11 @@ public class WebRestController {
 		log.info("userId = {}, roomId = {}, token = {}", userId, roomId, dto.getToken());
 		
 		long amount = acceptService.accept(userId, roomId, dto);
+		log.info("received money = {}", amount);
+		
 		
 		log.info("acceptMoney ended");
-		return "amount";
+		return amount;
 	}
 	
 	@GetMapping("/checkMoney")

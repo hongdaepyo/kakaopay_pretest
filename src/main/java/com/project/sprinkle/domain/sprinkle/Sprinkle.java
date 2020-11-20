@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Sprinkle {
-
+	
 	@Id
 	@GeneratedValue
 	private Long id; //뿌리기 아이디
@@ -36,11 +36,11 @@ public class Sprinkle {
 	private String roomId;
 	
 	@CreationTimestamp
-	@Column(nullable = false)
+	@Column(nullable = false, updatable = false)
 	private LocalDateTime createDate;
 	
 	@Column
-	private boolean acceptedFlag;
+	private boolean used;
 	
 	@Column(nullable = true)
 	private String acceptedUserId;
@@ -54,7 +54,34 @@ public class Sprinkle {
 		this.roomId = roomId;
 	}
 	
-//	public boolean isExpired() {
-//		
-//	}
+	public void use(String receiverId) {
+		verifyIsEqualUserIdAndAcceptedUserId();
+		verifyExpiration();
+		verifyUsed();
+		this.used = true;
+		this.acceptedUserId = receiverId;
+	}
+	
+	private void verifyIsEqualUserIdAndAcceptedUserId() {
+		if (userId.equals(acceptedUserId)) {
+			return;
+		}
+	}
+	
+	private void verifyExpiration() {
+		if (isExpired()) {
+			return;
+		}
+	}
+	
+	private void verifyUsed() {
+		if (used) {
+			return;
+		}
+	}
+	
+	public boolean isExpired() {
+		int aWeekDays = 7;
+		return LocalDateTime.now().isAfter(createDate.plusDays(aWeekDays));
+	}
 }

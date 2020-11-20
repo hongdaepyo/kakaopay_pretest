@@ -1,7 +1,5 @@
 package com.project.sprinkle.service;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
