@@ -14,9 +14,11 @@ import com.project.sprinkle.dto.SprinkleSaveRequestDto;
 import com.project.sprinkle.service.SprinkleService;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @RestController
 @AllArgsConstructor
+@Log4j2
 public class WebRestController {
 	
 	private SprinkleRepository sprinkleRepository;
@@ -29,23 +31,32 @@ public class WebRestController {
 	
 	@PostMapping(value = "/sprinkle", produces="application/json;charset=utf-8")
 	public ResponseEntity<String> sprinkleMoney(@RequestBody SprinkleSaveRequestDto dto, HttpServletRequest request) {
+		log.info("sprinkleMoney started");
+		
 		String userId = request.getHeader("X-USER-ID");
 		String roomId = request.getHeader("X-ROOM-ID");
+		
+		log.info("userId = {}, roomId = {}", userId, roomId);
 		
 		Sprinkle[] sprinkleArr = sprinkleService.toEntities(userId, roomId, dto);
 		
 		String returnToken = sprinkleService.save(sprinkleArr);
 		
+		log.info("sprinkleMoney ended");
 		return ResponseEntity.ok(returnToken);
 	}
 	
 	@GetMapping("/acceptMoney")
 	public String acceptMoney() {
+		log.info("acceptMoney started");
+		log.info("acceptMoney ended");
 		return "helloWorld";
 	}
 	
 	@GetMapping("/checkMoney")
 	public String checkMoney() {
+		log.info("checkMoney started");
+		log.info("checkMoney ended");
 		return "helloWorld";
 	}
 }
