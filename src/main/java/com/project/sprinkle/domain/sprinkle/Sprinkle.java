@@ -43,7 +43,7 @@ public class Sprinkle {
 	private boolean used;
 	
 	@Column(nullable = true)
-	private String acceptedUserId;
+	private String receiverId;
 	
 	@Builder
 	public Sprinkle(Long dividedAmount, String token, int tokenSN, String userId, String roomId) {
@@ -55,15 +55,15 @@ public class Sprinkle {
 	}
 	
 	public void use(String receiverId) {
-		verifyIsEqualUserIdAndAcceptedUserId();
+		verifyIsEqualUserIdAndreceiverId();
 		verifyExpiration();
 		verifyUsed();
 		this.used = true;
-		this.acceptedUserId = receiverId;
+		this.receiverId = receiverId;
 	}
 	
-	private void verifyIsEqualUserIdAndAcceptedUserId() {
-		if (userId.equals(acceptedUserId)) {
+	private void verifyIsEqualUserIdAndreceiverId() {
+		if (userId.equals(receiverId)) {
 			return;
 		}
 	}

@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.sprinkle.domain.sprinkle.Sprinkle;
 import com.project.sprinkle.domain.sprinkle.SprinkleRepository;
-import com.project.sprinkle.dto.SprinkleAcceptRequestDto;
+import com.project.sprinkle.dto.SprinkleReceiveRequestDto;
 import com.project.sprinkle.dto.SprinkleSaveRequestDto;
-import com.project.sprinkle.service.AcceptService;
+import com.project.sprinkle.service.ReceiveService;
 import com.project.sprinkle.service.SprinkleService;
 
 import lombok.AllArgsConstructor;
@@ -27,7 +27,7 @@ public class WebRestController {
 	
 	private SprinkleRepository sprinkleRepository;
 	private SprinkleService sprinkleService;
-	private AcceptService acceptService;
+	private ReceiveService receiveService;
 	
 	@GetMapping("/hello")
 	public String hello() {
@@ -52,19 +52,19 @@ public class WebRestController {
 	}
 	
 	@PutMapping(value= "/sprinkle", consumes="application/json;charset=utf-8")
-	public long acceptMoney(@RequestBody SprinkleAcceptRequestDto dto, HttpServletRequest request) {
-		log.info("acceptMoney started");
+	public long receiveMoney(@RequestBody SprinkleReceiveRequestDto dto, HttpServletRequest request) {
+		log.info("receiveMoney started");
 		
 		String userId = request.getHeader("X-USER-ID");
 		String roomId = request.getHeader("X-ROOM-ID");
 		
 		log.info("userId = {}, roomId = {}, token = {}", userId, roomId, dto.getToken());
 		
-		long amount = acceptService.accept(userId, roomId, dto);
+		long amount = receiveService.receive(userId, roomId, dto);
 		log.info("received money = {}", amount);
 		
 		
-		log.info("acceptMoney ended");
+		log.info("receiveMoney ended");
 		return amount;
 	}
 	

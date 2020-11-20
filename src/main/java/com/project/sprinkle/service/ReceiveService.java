@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.project.sprinkle.domain.sprinkle.Sprinkle;
 import com.project.sprinkle.domain.sprinkle.SprinkleRepository;
-import com.project.sprinkle.dto.SprinkleAcceptRequestDto;
+import com.project.sprinkle.dto.SprinkleReceiveRequestDto;
 import com.project.sprinkle.util.CommonUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -14,18 +14,18 @@ import lombok.extern.log4j.Log4j2;
 @Service
 @Log4j2
 @RequiredArgsConstructor
-public class AcceptService {
+public class ReceiveService {
 	
 	final private CommonUtil commonUtil;
 	
 	final private SprinkleRepository sprinkleRepository;
 	
 	@Transactional
-	public long accept(String userId, String roomId, SprinkleAcceptRequestDto dto) {
-		log.info("accept started");
+	public long receive(String userId, String roomId, SprinkleReceiveRequestDto dto) {
+		log.info("receive started");
 		long result = -1;
 		
-		int receivedCount = sprinkleRepository.countByAcceptedUserIdAndRoomIdAndToken(userId, roomId, dto.getToken());
+		int receivedCount = sprinkleRepository.countByReceiverIdAndRoomIdAndToken(userId, roomId, dto.getToken());
 		log.info("received Count = {}", receivedCount);
 		
 		if (receivedCount == 0) {
@@ -36,7 +36,7 @@ public class AcceptService {
 			}
 		}
 		
-		log.info("accept ended");
+		log.info("receive ended");
 		return result;
 	}
 }
