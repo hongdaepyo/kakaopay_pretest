@@ -2,7 +2,7 @@ package com.project.sprinkle.domain;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
@@ -34,8 +34,7 @@ public class SprinkleRepositoryTest {
 				.dividedAmount((long)100)
 				.token("ABC")
 				.tokenSN(1)
-				.sprinkleUserId("00001")
-				.sprinkleDate(new Date().toString())
+				.userId("00001")
 				.roomId("1")
 				.build());
 		
@@ -45,6 +44,6 @@ public class SprinkleRepositoryTest {
 		//then
 		Sprinkle sprinkle = sprinkleList.get(0);
 		assertEquals(sprinkle.getToken(), "ABC");
-		assertEquals(sprinkle.getSprinkleUserId(), "00001");
+		assertEquals(sprinkle.getUserId(), "00001");
 	}
 }

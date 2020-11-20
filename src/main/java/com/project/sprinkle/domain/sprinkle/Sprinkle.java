@@ -1,6 +1,10 @@
 package com.project.sprinkle.domain.sprinkle;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.*;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -26,13 +30,14 @@ public class Sprinkle {
 	private int tokenSN;
 	
 	@Column(nullable = false)
-	private String sprinkleUserId;
+	private String userId;
 	
 	@Column(nullable = false)
 	private String roomId;
 	
+	@CreationTimestamp
 	@Column(nullable = false)
-	private String sprinkleDate;
+	private LocalDateTime createDate;
 	
 	@Column
 	private boolean acceptedFlag;
@@ -41,12 +46,15 @@ public class Sprinkle {
 	private String acceptedUserId;
 	
 	@Builder
-	public Sprinkle(Long dividedAmount, String token, int tokenSN, String sprinkleUserId, String roomId, String sprinkleDate) {
+	public Sprinkle(Long dividedAmount, String token, int tokenSN, String userId, String roomId) {
 		this.dividedAmount = dividedAmount;
 		this.token = token;
 		this.tokenSN = tokenSN;
-		this.sprinkleUserId = sprinkleUserId;
+		this.userId = userId;
 		this.roomId = roomId;
-		this.sprinkleDate = sprinkleDate;
 	}
+	
+//	public boolean isExpired() {
+//		
+//	}
 }

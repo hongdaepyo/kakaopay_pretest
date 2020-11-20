@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 public class SprinkleSaveRequestDto {
 	private Long amount;
 	private int memberCount;
-	private String sprinkleUserId;
+	private String userId;
 	private String roomId;
 	
 	@Builder
 	public SprinkleSaveRequestDto (String userId, String roomId) {
-		this.setSprinkleUserId(userId);
+		this.setUserId(userId);
 		this.setRoomId(roomId);
 	}
 }

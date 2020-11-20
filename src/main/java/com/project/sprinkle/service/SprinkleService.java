@@ -1,6 +1,6 @@
 package com.project.sprinkle.service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -40,8 +40,7 @@ public class SprinkleService {
 								.roomId(dto.getRoomId())
 								.token(token)
 								.tokenSN(i)
-								.sprinkleUserId(dto.getSprinkleUserId())
-								.sprinkleDate(new Date().toString())
+								.userId(dto.getUserId())
 								.build();
 		}
 		
@@ -50,7 +49,7 @@ public class SprinkleService {
 	}
 	
 	public Sprinkle[] toEntities(String userId, String roomId, SprinkleSaveRequestDto dto) {
-		dto.setSprinkleUserId(userId);
+		dto.setUserId(userId);
 		dto.setRoomId(roomId);
 		
 		return toEntities(dto);
