@@ -37,6 +37,9 @@ public class Sprinkle {
 	@Column
 	private boolean acceptedFlag;
 	
+	@Column(nullable = true)
+	private String acceptedUserId;
+	
 	@Builder
 	public Sprinkle(Long dividedAmount, String token, int tokenSN, String sprinkleUserId, String roomId, String sprinkleDate) {
 		this.dividedAmount = dividedAmount;

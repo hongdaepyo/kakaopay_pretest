@@ -5,12 +5,16 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.sprinkle.domain.sprinkle.Sprinkle;
 import com.project.sprinkle.domain.sprinkle.SprinkleRepository;
+import com.project.sprinkle.dto.SprinkleAcceptRequestDto;
 import com.project.sprinkle.dto.SprinkleSaveRequestDto;
+import com.project.sprinkle.service.AcceptService;
 import com.project.sprinkle.service.SprinkleService;
 
 import lombok.AllArgsConstructor;
@@ -23,6 +27,7 @@ public class WebRestController {
 	
 	private SprinkleRepository sprinkleRepository;
 	private SprinkleService sprinkleService;
+	private AcceptService acceptService;
 	
 	@GetMapping("/hello")
 	public String hello() {
@@ -46,11 +51,19 @@ public class WebRestController {
 		return ResponseEntity.ok(returnToken);
 	}
 	
-	@GetMapping("/acceptMoney")
-	public String acceptMoney() {
+	@PutMapping(value= "/sprinkle", consumes="application/json;charset=utf-8")
+	public String acceptMoney(@RequestBody SprinkleAcceptRequestDto dto, HttpServletRequest request) {
 		log.info("acceptMoney started");
+		
+		String userId = request.getHeader("X-USER-ID");
+		String roomId = request.getHeader("X-ROOM-ID");
+		
+		log.info("userId = {}, roomId = {}, token = {}", userId, roomId, dto.getToken());
+		
+		long amount = acceptService.accept(userId, roomId, dto);
+		
 		log.info("acceptMoney ended");
-		return "helloWorld";
+		return "amount";
 	}
 	
 	@GetMapping("/checkMoney")
