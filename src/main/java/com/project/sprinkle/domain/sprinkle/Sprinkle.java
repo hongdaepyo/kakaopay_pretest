@@ -6,6 +6,10 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.project.sprinkle.error.exception.ExpiredException;
+import com.project.sprinkle.error.exception.UsedTokenException;
+import com.project.sprinkle.error.exception.UserIdEqualsReceiverIdException;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
@@ -55,28 +59,28 @@ public class Sprinkle {
 	}
 	
 	public void use(String receiverId) {
-		verifyIsEqualUserIdAndreceiverId();
+		verifyUserIdEqualsReceiverId(receiverId);
 		verifyExpiration();
 		verifyUsed();
 		this.used = true;
 		this.receiverId = receiverId;
 	}
 	
-	private void verifyIsEqualUserIdAndreceiverId() {
+	private void verifyUserIdEqualsReceiverId(String receiverId) {
 		if (userId.equals(receiverId)) {
-			return;
+			throw new UserIdEqualsReceiverIdException(receiverId + " is creator.");
 		}
 	}
 	
 	private void verifyExpiration() {
 		if (isExpired()) {
-			return;
+			throw new ExpiredException("token is expired.");
 		}
 	}
 	
 	private void verifyUsed() {
 		if (used) {
-			return;
+			throw new UsedTokenException("token is already used.");
 		}
 	}
 	
