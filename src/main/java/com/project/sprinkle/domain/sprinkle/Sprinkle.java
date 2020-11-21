@@ -85,7 +85,7 @@ public class Sprinkle {
 	}
 	
 	public boolean isExpired() {
-		int aWeekDays = 7;
-		return LocalDateTime.now().isAfter(createDate.plusDays(aWeekDays));
+		int tenMiniute = 10;
+		return LocalDateTime.now().isAfter(createDate.plusMinutes(tenMiniute));
 	}
 }
