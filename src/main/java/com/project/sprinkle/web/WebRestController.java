@@ -58,7 +58,7 @@ public class WebRestController {
 	}
 	
 	@PutMapping(value= "/sprinkle", consumes="application/json;charset=utf-8")
-	public long receiveMoney(@RequestBody SprinkleReceiveRequestDto dto, HttpServletRequest request) {
+	public ResponseEntity<Long> receiveMoney(@RequestBody SprinkleReceiveRequestDto dto, HttpServletRequest request) {
 		log.info("receiveMoney started");
 		
 		String userId = request.getHeader("X-USER-ID");
@@ -71,11 +71,11 @@ public class WebRestController {
 		
 		
 		log.info("receiveMoney ended");
-		return amount;
+		return ResponseEntity.ok(amount);
 	}
 	
 	@GetMapping(value = "/checkMoney/{token}")
-	public SprinkleCheckResponseDto checkMoney(@PathVariable String token, HttpServletRequest request) {
+	public ResponseEntity<SprinkleCheckResponseDto> checkMoney(@PathVariable String token, HttpServletRequest request) {
 		log.info("checkMoney started");
 		
 		String userId = request.getHeader("X-USER-ID");
@@ -86,6 +86,6 @@ public class WebRestController {
 		SprinkleCheckResponseDto dto = checkService.check(userId, roomId, token);
 		
 		log.info("checkMoney ended");
-		return dto;
+		return ResponseEntity.ok(dto);
 	}
 }
