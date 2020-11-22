@@ -11,11 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.sprinkle.domain.sprinkle.Sprinkle;
-import com.project.sprinkle.domain.sprinkle.SprinkleRepository;
 import com.project.sprinkle.dto.SprinkleCheckResponseDto;
 import com.project.sprinkle.dto.SprinkleReceiveRequestDto;
 import com.project.sprinkle.dto.SprinkleSaveRequestDto;
@@ -31,9 +29,9 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class WebRestController {
 	
-	private SprinkleService sprinkleService;
-	private ReceiveService receiveService;
-	private CheckService checkService;
+	private final SprinkleService sprinkleService;
+	private final ReceiveService receiveService;
+	private final CheckService checkService;
 	
 	@GetMapping("/hello")
 	public String hello() {
