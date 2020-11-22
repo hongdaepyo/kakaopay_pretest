@@ -20,6 +20,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.project.sprinkle.dto.SprinkleCheckResponseDto;
+
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -90,7 +92,20 @@ public class WebRestControllerTest {
 		assertThat(response.getBody()).asString().matches("[0-9]+");
 	}
 	
+	@Test
+	@Order(3)
 	public void checkMoneyOk() {
-		log.info("checkMoney started");
+		HttpHeaders headers = getHeader("00001", "ABCDE");
+		
+		HttpEntity<Map<String, String>> request = new HttpEntity<Map<String, String>>(null, headers);
+		
+		ResponseEntity<SprinkleCheckResponseDto> response = restTemplate.exchange("/checkMoney/" + testToken, HttpMethod.GET, request, SprinkleCheckResponseDto.class);
+		
+		log.info(response);
+		
+		assertThat(response).isNotNull();
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.getBody().getTotalMoney()).isEqualTo(200000);
+		assertThat(response.getBody().getReceivedInfo().get(0).getReceiverId()).isEqualTo("00002");
 	}
 }

@@ -1,9 +1,11 @@
 package com.project.sprinkle.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class ReceivedInfo {
-	final private String receiverId;
-	final private long receivedMoney;
+	private String receiverId;
+	private long receivedMoney;
 }

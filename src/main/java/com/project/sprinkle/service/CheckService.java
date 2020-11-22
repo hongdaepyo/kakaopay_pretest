@@ -65,9 +65,13 @@ public class CheckService {
 			totalMoney += sprinkle.getDividedAmount();
 			
 			if (sprinkle.isUsed()) {
+				ReceivedInfo receivedInfo = new ReceivedInfo();
 				receivedSum += sprinkle.getDividedAmount();
 				
-				receivedInfoList.add(new ReceivedInfo(sprinkle.getReceiverId(), sprinkle.getDividedAmount()));
+				receivedInfo.setReceiverId(sprinkle.getReceiverId());
+				receivedInfo.setReceivedMoney(sprinkle.getDividedAmount());
+				
+				receivedInfoList.add(receivedInfo);
 			}
 		}
 		
