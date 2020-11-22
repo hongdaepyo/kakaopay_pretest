@@ -11,7 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.project.sprinkle.domain.sprinkle.Sprinkle;
 import com.project.sprinkle.domain.sprinkle.SprinkleRepository;
-import com.project.sprinkle.dto.SprinkleReceiveRequestDto;
+import com.project.sprinkle.dto.ReceivedInfo;
+import com.project.sprinkle.dto.SprinkleCheckResponseDto;
 import com.project.sprinkle.util.CommonUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -29,9 +30,9 @@ public class CheckService {
 	private int A_WEEK_DAYS = 7;
 	
 	@Transactional
-	public Map<String, Object> check(String userId, String roomId, String token) {
+	public SprinkleCheckResponseDto check(String userId, String roomId, String token) {
 		log.info("check started");
-		Map<String, Object> result = null;
+		SprinkleCheckResponseDto result = null;
 		
 		LocalDateTime aWeekBeforeDate = LocalDateTime.now().minusDays(A_WEEK_DAYS);
 		
@@ -46,12 +47,12 @@ public class CheckService {
 		return result;
 	}
 	
-	private Map<String, Object> getCheckResult(List<Sprinkle> list) {
-		Map<String, Object> map = new HashMap<String, Object>();
+	private SprinkleCheckResponseDto getCheckResult(List<Sprinkle> list) {
+		SprinkleCheckResponseDto dto = new SprinkleCheckResponseDto();
+		List<ReceivedInfo> receivedInfoList = new ArrayList<ReceivedInfo>();
 		
-		List<Map<String, Object>> receivedInfoList = new ArrayList<Map<String,Object>>();
 		LocalDateTime createDate = null;
-		long totalSum = 0;
+		long totalMoney = 0;
 		long receivedSum = 0;
 		
 		int len = list.size();
@@ -61,24 +62,20 @@ public class CheckService {
 				createDate = sprinkle.getCreateDate();
 			}
 			
-			totalSum += sprinkle.getDividedAmount();
+			totalMoney += sprinkle.getDividedAmount();
 			
 			if (sprinkle.isUsed()) {
 				receivedSum += sprinkle.getDividedAmount();
 				
-				Map<String, Object> receivedMap = new HashMap<String, Object>();
-				receivedMap.put("receivedAmount", sprinkle.getDividedAmount());
-				receivedMap.put("receiverId", sprinkle.getReceiverId());
-				
-				receivedInfoList.add(receivedMap);
+				receivedInfoList.add(new ReceivedInfo(sprinkle.getReceiverId(), sprinkle.getDividedAmount()));
 			}
 		}
 		
-		map.put("createDate", createDate);
-		map.put("totalSum", totalSum);
-		map.put("receivedSum", receivedSum);
-		map.put("receivedInfo", receivedInfoList);
+		dto.setCreateDate(createDate);
+		dto.setReceivedInfo(receivedInfoList);
+		dto.setTotalMoney(totalMoney);
+		dto.setTotalReceivedMoney(receivedSum);
 		
-		return map;
+		return dto;
 	}
 }

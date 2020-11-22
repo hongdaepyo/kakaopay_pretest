@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.sprinkle.domain.sprinkle.Sprinkle;
 import com.project.sprinkle.domain.sprinkle.SprinkleRepository;
+import com.project.sprinkle.dto.SprinkleCheckResponseDto;
 import com.project.sprinkle.dto.SprinkleReceiveRequestDto;
 import com.project.sprinkle.dto.SprinkleSaveRequestDto;
 import com.project.sprinkle.service.CheckService;
@@ -30,7 +31,6 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class WebRestController {
 	
-	private SprinkleRepository sprinkleRepository;
 	private SprinkleService sprinkleService;
 	private ReceiveService receiveService;
 	private CheckService checkService;
@@ -75,7 +75,7 @@ public class WebRestController {
 	}
 	
 	@GetMapping(value = "/checkMoney/{token}")
-	public Map<String, Object> checkMoney(@PathVariable String token, HttpServletRequest request) {
+	public SprinkleCheckResponseDto checkMoney(@PathVariable String token, HttpServletRequest request) {
 		log.info("checkMoney started");
 		
 		String userId = request.getHeader("X-USER-ID");
@@ -83,9 +83,9 @@ public class WebRestController {
 		
 		log.info("userId = {}, roomId = {}, token = {}", userId, roomId, token);
 		
-		Map<String, Object> map = checkService.check(userId, roomId, token);
+		SprinkleCheckResponseDto dto = checkService.check(userId, roomId, token);
 		
 		log.info("checkMoney ended");
-		return map;
+		return dto;
 	}
 }
