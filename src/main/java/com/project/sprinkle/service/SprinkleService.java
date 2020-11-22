@@ -29,12 +29,13 @@ public class SprinkleService {
 		int memberCount = dto.getMemberCount();
 		Sprinkle[] sprinkleArr = new Sprinkle[memberCount];
 		String token = commonUtil.generateToken();
+		long[] moneyArr = commonUtil.generateDivideMoneyAmount(dto.getAmount(), memberCount);
 		
 		log.debug("token = {}", token);
 		
 		for (int i = 0; i < memberCount; i++) {
 			sprinkleArr[i] = Sprinkle.builder()
-								.dividedAmount(dto.getAmount() / memberCount)
+								.dividedAmount(moneyArr[i])
 								.roomId(dto.getRoomId())
 								.token(token)
 								.tokenSN(i)
