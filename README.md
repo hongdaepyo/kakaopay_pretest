@@ -20,8 +20,11 @@
 -------------
 ### Build and Run App
 `git clone https://github.com/hongdaepyo/kakaopay_pretest.git`
+
 `cd kakaopay_pretest/`
+
 `./gradlew clean build`
+
 `java -jar build/libs/kakaopaySprinkle-0.0.1-SNAPSHOT.jar`
 
 -----------------------------------
