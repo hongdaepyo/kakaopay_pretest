@@ -65,7 +65,6 @@ public class WebRestController {
 		long amount = receiveService.receive(userId, roomId, dto);
 		log.info("received money = {}", amount);
 		
-		
 		log.info("receiveMoney ended");
 		return ResponseEntity.ok(amount);
 	}
@@ -75,7 +74,6 @@ public class WebRestController {
 		log.info("checkMoney started");
 		
 		String userId = request.getHeader("X-USER-ID");
-		String roomId = request.getHeader("X-ROOM-ID");
 		
 		log.info("userId = {}, token = {}", userId, token);
 		

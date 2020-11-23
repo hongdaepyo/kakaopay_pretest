@@ -2,7 +2,10 @@ package com.project.sprinkle.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,13 +15,16 @@ import com.project.sprinkle.domain.sprinkle.Sprinkle;
 import com.project.sprinkle.dto.SprinkleCheckResponseDto;
 import com.project.sprinkle.dto.SprinkleReceiveRequestDto;
 import com.project.sprinkle.dto.SprinkleSaveRequestDto;
+import com.project.sprinkle.error.exception.AlreadyReceivedTokenException;
 import com.project.sprinkle.error.exception.CheckFailedException;
+import com.project.sprinkle.error.exception.NotExistReceivableSprinkleException;
 
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
+@TestMethodOrder(OrderAnnotation.class)
 public class ServiceTest {
 	@Autowired
 	SprinkleService sprinkleService;
@@ -32,6 +38,7 @@ public class ServiceTest {
 	private static String testToken;
 	
 	@Test
+	@Order(1)
 	public void sprinkleSaveOk() {
 		SprinkleSaveRequestDto dto = new SprinkleSaveRequestDto();
 		dto.setAmount(500000L);
@@ -54,6 +61,7 @@ public class ServiceTest {
 	}
 	
 	@Test
+	@Order(2)
 	public void receiveOK() {
 		SprinkleReceiveRequestDto dto = new SprinkleReceiveRequestDto();
 		
@@ -69,6 +77,46 @@ public class ServiceTest {
 		
 		assertThat(receivedMoney).isGreaterThanOrEqualTo(receivedMoney);
 		assertThat(receivedMoney).asString().matches("[0-9]+");
+	}
+	
+	@Test
+	@Order(3)
+	public void receivedTokenFailTest() {
+		SprinkleReceiveRequestDto dto = new SprinkleReceiveRequestDto();
+		
+		String userId = "01010";
+		String roomId = "testroom";
+		
+		dto.setUserId(userId);
+		dto.setRoomId(userId);
+		dto.setToken(testToken);
+		
+		try {
+			long receivedMoney = receiveService.receive(userId, roomId, dto);
+		} catch (AlreadyReceivedTokenException ex) {
+			log.info(ex.getMessage());
+			assertThat(ex.getMessage()).contains("already received");
+		}
+	}
+	
+	@Test
+	@Order(4)
+	public void notExistReceivableSprinkleTest() {
+		SprinkleReceiveRequestDto dto = new SprinkleReceiveRequestDto();
+		
+		String userId = "01010";
+		String roomId = "testroom";
+		
+		dto.setUserId(userId);
+		dto.setRoomId(userId);
+		dto.setToken("as");
+		
+		try {
+			long receivedMoney = receiveService.receive(userId, roomId, dto);
+		} catch (NotExistReceivableSprinkleException ex) {
+			log.info(ex.getMessage());
+			assertThat(ex.getMessage()).contains("There is no receivable sprinkle");
+		}
 	}
 	
 	@Test
