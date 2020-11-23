@@ -56,7 +56,7 @@ PUT /kakaopay/sprinkle
    X-USER-ID : 00002
    X-ROOM-ID : ABCDE
    - body
-   ```json
+```json
 {
     "token": "IEX"
 }
