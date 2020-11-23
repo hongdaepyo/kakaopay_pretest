@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.sprinkle.domain.sprinkle.Sprinkle;
@@ -28,16 +29,12 @@ import lombok.extern.log4j.Log4j2;
 @RestController
 @AllArgsConstructor
 @Log4j2
+@RequestMapping("/kakaopay/")
 public class WebRestController {
 	
 	private final SprinkleService sprinkleService;
 	private final ReceiveService receiveService;
 	private final CheckService checkService;
-	
-	@GetMapping("/hello")
-	public String hello() {
-		return "helloWorld";
-	}
 	
 	@PostMapping(value = "/sprinkle", produces="application/json;charset=utf-8")
 	public ResponseEntity<String> sprinkleMoney(@RequestBody SprinkleSaveRequestDto dto, HttpServletRequest request) {

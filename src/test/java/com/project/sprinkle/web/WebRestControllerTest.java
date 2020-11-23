@@ -43,12 +43,6 @@ public class WebRestControllerTest {
 	}
 	
 	@Test
-	public void helloTest() {
-		ResponseEntity<String> response = restTemplate.getForEntity("/hello", String.class);
-		assertThat(response.getBody()).isEqualTo("helloWorld");
-	}
-	
-	@Test
 	@Order(1)
 	public void sprinkleMoneyOK() {
 		HttpHeaders headers = getHeader("00001", "ABCDE");
@@ -59,7 +53,7 @@ public class WebRestControllerTest {
 		
 		HttpEntity<Map<String, Integer>> request = new HttpEntity<Map<String, Integer>>(map, headers);
 		
-		ResponseEntity<String> response = restTemplate.postForEntity("/sprinkle", request, String.class);
+		ResponseEntity<String> response = restTemplate.postForEntity("/kakaopay/sprinkle", request, String.class);
 		
 		log.info(response);
 		
@@ -82,7 +76,7 @@ public class WebRestControllerTest {
 		
 		HttpEntity<Map<String, String>> request = new HttpEntity<Map<String, String>>(map, headers);
 		
-		ResponseEntity<Long> response = restTemplate.exchange("/sprinkle", HttpMethod.PUT, request, Long.class);
+		ResponseEntity<Long> response = restTemplate.exchange("/kakaopay/sprinkle", HttpMethod.PUT, request, Long.class);
 		
 		log.info("received money = {}", response);
 		
@@ -99,7 +93,7 @@ public class WebRestControllerTest {
 		
 		HttpEntity<Map<String, String>> request = new HttpEntity<Map<String, String>>(null, headers);
 		
-		ResponseEntity<SprinkleCheckResponseDto> response = restTemplate.exchange("/checkMoney/" + testToken, HttpMethod.GET, request, SprinkleCheckResponseDto.class);
+		ResponseEntity<SprinkleCheckResponseDto> response = restTemplate.exchange("/kakaopay/checkMoney/" + testToken, HttpMethod.GET, request, SprinkleCheckResponseDto.class);
 		
 		log.info(response);
 		
