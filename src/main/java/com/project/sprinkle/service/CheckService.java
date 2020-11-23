@@ -13,6 +13,7 @@ import com.project.sprinkle.domain.sprinkle.Sprinkle;
 import com.project.sprinkle.domain.sprinkle.SprinkleRepository;
 import com.project.sprinkle.dto.ReceivedInfo;
 import com.project.sprinkle.dto.SprinkleCheckResponseDto;
+import com.project.sprinkle.error.exception.CheckFailedException;
 import com.project.sprinkle.util.CommonUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,7 @@ public class CheckService {
 	private int A_WEEK_DAYS = 7;
 	
 	@Transactional
-	public SprinkleCheckResponseDto check(String userId, String roomId, String token) {
+	public SprinkleCheckResponseDto check(String userId, String token) {
 		log.info("check started");
 		SprinkleCheckResponseDto result = null;
 		
@@ -41,6 +42,10 @@ public class CheckService {
 		
 		if (sprinkleList.size() > 0) {
 			result = getCheckResult(sprinkleList);
+		} else if (!token.matches("[a-zA-Z0-9]{3}")) {
+			throw new CheckFailedException("Invalid token Error");
+		} else {
+			throw new CheckFailedException("There is no result. Sprinkle check can be done for 7 days.");
 		}
 		
 		log.info("check ended");

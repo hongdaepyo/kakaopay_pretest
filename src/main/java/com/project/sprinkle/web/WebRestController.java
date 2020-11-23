@@ -17,6 +17,7 @@ import com.project.sprinkle.domain.sprinkle.Sprinkle;
 import com.project.sprinkle.dto.SprinkleCheckResponseDto;
 import com.project.sprinkle.dto.SprinkleReceiveRequestDto;
 import com.project.sprinkle.dto.SprinkleSaveRequestDto;
+import com.project.sprinkle.error.exception.CheckFailedException;
 import com.project.sprinkle.service.CheckService;
 import com.project.sprinkle.service.ReceiveService;
 import com.project.sprinkle.service.SprinkleService;
@@ -79,9 +80,13 @@ public class WebRestController {
 		String userId = request.getHeader("X-USER-ID");
 		String roomId = request.getHeader("X-ROOM-ID");
 		
-		log.info("userId = {}, roomId = {}, token = {}", userId, roomId, token);
+		log.info("userId = {}, token = {}", userId, token);
 		
-		SprinkleCheckResponseDto dto = checkService.check(userId, roomId, token);
+		if (!token.matches("[a-zA-z0-9]{3}")) {
+			throw new CheckFailedException("Invalid token Error");
+		}
+		
+		SprinkleCheckResponseDto dto = checkService.check(userId, token);
 		
 		log.info("checkMoney ended");
 		return ResponseEntity.ok(dto);

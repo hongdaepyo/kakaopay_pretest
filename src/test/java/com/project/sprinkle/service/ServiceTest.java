@@ -12,6 +12,7 @@ import com.project.sprinkle.domain.sprinkle.Sprinkle;
 import com.project.sprinkle.dto.SprinkleCheckResponseDto;
 import com.project.sprinkle.dto.SprinkleReceiveRequestDto;
 import com.project.sprinkle.dto.SprinkleSaveRequestDto;
+import com.project.sprinkle.error.exception.CheckFailedException;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -73,12 +74,37 @@ public class ServiceTest {
 	@Test
 	public void checkMoneyOK() {
 		String userId = "12345";
-		String roomId = "testroom";
 		
-		SprinkleCheckResponseDto dto = checkService.check(userId, roomId, testToken);
+		SprinkleCheckResponseDto dto = checkService.check(userId, testToken);
 		log.info(dto);
 		
 		assertThat(dto.getTotalMoney()).isEqualTo(500000);
 		assertThat(dto.getReceivedInfo().get(0).getReceiverId()).isEqualTo("01010");
+	}
+	
+	@Test
+	public void checkMoneyNoResultTest() {
+		String userId = "11111";
+		
+		try {
+			SprinkleCheckResponseDto dto = checkService.check(userId, testToken);
+			log.info(dto);
+		} catch (CheckFailedException ex) {
+			log.info(ex.getMessage());
+			assertThat(ex.getMessage()).containsIgnoringCase("There is no result");
+		}
+	}
+	
+	@Test
+	public void checkMoneyInvalidTokenTest() {
+		String userId = "12345";
+		String invalidToken = "A";
+		try {
+			SprinkleCheckResponseDto dto = checkService.check(userId, invalidToken);
+			log.info(dto);
+		} catch (CheckFailedException ex) {
+			log.info(ex.getMessage());
+			assertThat(ex.getMessage()).isEqualTo("Invalid token Error");
+		}
 	}
 }

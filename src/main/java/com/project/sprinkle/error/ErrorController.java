@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.project.sprinkle.error.exception.CheckFailedException;
 import com.project.sprinkle.error.exception.ExpiredException;
 import com.project.sprinkle.error.exception.UsedTokenException;
 import com.project.sprinkle.error.exception.UserIdEqualsReceiverIdException;
@@ -34,6 +35,14 @@ public class ErrorController {
 	@ExceptionHandler({UsedTokenException.class})
 	protected ResponseEntity<ErrorResponse> handleUsedTokenException(final UsedTokenException ex) {
 		log.error("handleUsedTokenException", ex);
+		ErrorResponse response = new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+		
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler({CheckFailedException.class})
+	protected ResponseEntity<ErrorResponse> handleCheckFailedException(final CheckFailedException ex) {
+		log.error("handleCheckFailedException", ex);
 		ErrorResponse response = new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
 		
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
