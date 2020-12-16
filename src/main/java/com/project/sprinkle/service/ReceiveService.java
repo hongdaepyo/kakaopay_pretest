@@ -21,7 +21,6 @@ public class ReceiveService {
 	
 	@Transactional
 	public long receive(String userId, String roomId, SprinkleReceiveRequestDto dto) {
-		log.info("receive started");
 		long result = -1;
 		
 		int receivedCount = sprinkleRepository.countByReceiverIdAndRoomIdAndToken(userId, roomId, dto.getToken());
@@ -39,7 +38,6 @@ public class ReceiveService {
 			throw new AlreadyReceivedTokenException("This user is already received");
 		}
 		
-		log.info("receive ended");
 		return result;
 	}
 }

@@ -24,8 +24,6 @@ public class SprinkleService {
 	private CommonUtil commonUtil;
 	
 	public Sprinkle[] toEntities(SprinkleSaveRequestDto dto) {
-		log.info("toEntities started");
-		
 		int memberCount = dto.getMemberCount();
 		Sprinkle[] sprinkleArr = new Sprinkle[memberCount];
 		String token = commonUtil.generateToken();
@@ -43,7 +41,6 @@ public class SprinkleService {
 								.build();
 		}
 		
-		log.info("toEntities ended");
 		return sprinkleArr;
 	}
 	
@@ -56,7 +53,6 @@ public class SprinkleService {
 	
 	@Transactional
 	public String save(Sprinkle[] sprinkleArr) {
-		log.info("save started");
 		String token = sprinkleArr[0].getToken();
 		
 		for (int i = 0; i < sprinkleArr.length; i++) {
@@ -66,7 +62,6 @@ public class SprinkleService {
 		em.flush();
 		em.clear();
 		
-		log.info("save ended");
 		return token;
 	}
 }

@@ -32,7 +32,6 @@ public class CheckService {
 	
 	@Transactional
 	public SprinkleCheckResponseDto check(String userId, String token) {
-		log.info("check started");
 		SprinkleCheckResponseDto result = null;
 		
 		LocalDateTime aWeekBeforeDate = LocalDateTime.now().minusDays(A_WEEK_DAYS);
@@ -48,7 +47,6 @@ public class CheckService {
 			throw new CheckFailedException("There is no result. Sprinkle check can be done for 7 days.");
 		}
 		
-		log.info("check ended");
 		return result;
 	}
 	
